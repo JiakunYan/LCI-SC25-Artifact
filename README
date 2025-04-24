@@ -1,0 +1,5 @@
+# LCI-SC25-Artifact
+
+This repository contains the artifacts for the LCI-SC25 paper "LCI: a Lightweight Communication Interface for Efficient Asynchronous Multithreaded Communication".
+
+For up-to-date LCI source code, please visit the [LCI GitHub repository](https://github.com/uiuc-hpc/lci).
