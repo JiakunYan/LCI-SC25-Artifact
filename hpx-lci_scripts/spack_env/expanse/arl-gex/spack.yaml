@@ -1,0 +1,19 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs:
+  - arl@master +upcxx backend=gex gex-module=gasnet-ibv-par
+  view: true
+  concretizer:
+    unify: true
+    reuse: false
+  develop:
+    arl:
+      path: ../../../../arl
+      spec: arl@=master
+    lci:
+      path: ../../../../lci2
+      spec: lci@=2.0.0

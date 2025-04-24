@@ -1,0 +1,65 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+jobs:
+  test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            export DEBIAN_FRONTEND=noninteractive
+            sudo apt-get update
+            sudo apt-get install -y cmake ninja-build libfabric-bin libfabric-dev openmpi-bin openmpi-common openmpi-doc libopenmpi-dev clang-format python3-pip python3-venv
+      - run:
+          name: Setup Virtual Environment and Install CMake-Format
+          command: |
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade cmake-format
+      - run:
+          name: Verify installations
+          command: |
+            cmake --version
+            ninja --version
+            mpicc --version
+            mpirun --version
+            fi_info --version
+      - checkout:
+          path: lci
+      - run:
+          name: Running CMake Configure
+          command: |
+            ls
+            cmake \
+                -S lci \
+                -B lci/build \
+                -DCMAKE_BUILD_TYPE=Debug \
+                -DLCI_DEBUG=ON \
+                -DLCI_NETWORK_BACKENDS=ofi,ibv \
+                -DLCI_PACKET_NUM_DEFAULT=8192 \
+                -DLCI_BACKEND_MAX_RECVS_DEFAULT=1024 \
+                -DLCI_USE_TCMALLOC=OFF
+      - run:
+          name: Running CMake Build
+          command: |
+            cmake --build lci/build --target all
+      - run:
+          name: Running CTest
+          command: |
+            ulimit -c unlimited
+            export LCT_PMI_BACKEND=local
+            ctest --extra-verbose --timeout 1200 \
+                  --test-dir lci/build \
+                  --output-junit ctest.out.xml
+      - store_test_results:
+          path: lci/build/ctest.out.xml
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - test

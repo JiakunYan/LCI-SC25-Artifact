@@ -1,0 +1,15 @@
+# CLion
+.idea
+cmake-build*
+
+# macOS
+.DS_store
+
+.fuse_hidden*
+tmp/
+
+# vscode
+.vscode
+vscode-build
+
+__pycache__

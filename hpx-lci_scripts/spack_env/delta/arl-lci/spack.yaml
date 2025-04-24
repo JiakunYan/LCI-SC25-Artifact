@@ -1,0 +1,20 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs:
+  - arl@master backend=lci cppflags="--param max-inline-insns-single=35000 --param inline-unit-growth=10000 --param large-function-growth=200000"
+    ^lci+examples+tests+benchmarks fabric=ofi
+  view: true
+  concretizer:
+    unify: true
+    reuse: false
+  develop:
+    arl:
+      path: ../../../../arl
+      spec: arl@=master
+    lci:
+      path: ../../../../lci2
+      spec: lci@=2.0.0

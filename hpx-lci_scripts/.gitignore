@@ -1,0 +1,9 @@
+.idea
+__pycache__
+run
+data
+draw
+archive
+.spack-env
+spack.lock
+.vscode

@@ -1,0 +1,6 @@
+add_arl_executable(arl_agg_bw_strong arl_agg_bw_strong.cpp)
+add_arl_executable(arl_aggrd_bw_strong arl_aggrd_bw_strong.cpp)
+add_arl_executable(arl_ff_bw_strong arl_ff_bw_strong.cpp)
+add_arl_executable(arl_ffrd_bw_strong arl_ffrd_bw_strong.cpp)
+add_gex_executable(gex_bw_strong gex_bw_strong.cpp)
+add_upcxx_executable(upcxx_agg_bw_strong upcxx_agg_bw_strong.cpp)

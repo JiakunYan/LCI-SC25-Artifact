@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" != "-n" ]; then
+    echo "Usage: $0 -n <nprocs> <command>"
+    exit 1
+fi
+nprocs=$2
+executable=$3
+# Use LCT PMI File to bootstrap
+export LCT_PMI_BACKEND=file,local
+export LCT_PMI_FILE_NRANKS=${nprocs}
+
+pids=()
+
+clean_up() {
+  echo "Cleaning up"
+  children=$(jobs -p)
+  echo "Killing all children ${children}"
+  if [ -n "${children}" ]; then
+    kill ${children}
+  fi
+}
+
+# Kill all children on interrupt or error
+trap clean_up INT TERM
+
+# launch the command nprocs times nonblockingly
+shift 2
+for i in $(seq 1 ${nprocs}); do
+  "$@" &
+  pids+=($!)
+done
+
+# Wait for all and capture exit codes
+exit_code=0
+for pid in "${pids[@]}"; do
+  wait "$pid" || exit_code=$?
+done
+
+exit $exit_code
+
+# clean_up() {
+#   echo "Cleaning up"
+#   for pid in "${pids[@]}"; do
+#     if kill -0 "$pid" 2>/dev/null; then
+#       echo "Killing child $pid"
+#       kill "$pid"
+#     fi
+#   done
+# }
+
+# # Kill all children on interrupt or error
+# trap clean_up INT TERM
+
+# # launch the command nprocs times nonblockingly
+# shift 2
+# for i in $(seq 1 ${nprocs}); do
+#   "$@" &
+# done
+# wait # wait for all background jobs to finish

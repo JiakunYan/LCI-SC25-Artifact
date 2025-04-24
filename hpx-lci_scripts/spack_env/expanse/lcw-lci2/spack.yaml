@@ -1,0 +1,25 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs:
+  - lcw+examples backend=mpi,lci2,gex
+    ^lci fabric=ibv
+    ^mpich+vci+slurm~hydra~fortran netmod=ofi pmi=slurm
+    ^libfabric fabrics=verbs,rxm
+  view: true
+  concretizer:
+    unify: true
+    reuse: false
+  develop:
+    mpich:
+      path: ../../../../mpich
+      spec: mpich@=master
+    lcw:
+      path: ../../../../lcw
+      spec: lcw@=master
+    lci:
+      path: ../../../../lci2
+      spec: lci@=2.0.0
