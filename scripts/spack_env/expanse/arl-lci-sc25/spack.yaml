@@ -16,5 +16,5 @@ spack:
       path: ../../../../arl
       spec: arl@=master
     lci:
-      path: ../../../../lci2
+      path: ../../../../lci
       spec: lci@=2.0.0

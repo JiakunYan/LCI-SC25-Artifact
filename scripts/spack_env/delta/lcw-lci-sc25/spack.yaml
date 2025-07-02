@@ -5,7 +5,8 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - lcw+examples ^lci fabric=ofi
+  - lcw+examples backend=mpi,lci2,gex gex-module=gasnet-ofi-par ^lci+benchmarks fabric=ofi
+    ^mpich +vci+slurm~hydra~fortran netmod=ofi pmi=slurm ch4_shmmods=none
   view: true
   concretizer:
     unify: true
@@ -16,3 +17,7 @@ spack:
     lcw:
       path: ../../../../lcw
       spec: lcw@=master
+  config:
+    environment:
+      set:
+        LDFLAGS: "-L/u/jiakuny/lib"

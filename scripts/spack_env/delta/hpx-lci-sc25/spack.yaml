@@ -5,18 +5,28 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - lcw+examples backend=mpi,lci2,gex gex-module=gasnet-ofi-par ^lci+benchmarks fabric=ofi
+  - octotiger@master%gcc@11.4
+    ^hpx networking=lcw,mpi max_cpu_count=128
+    ^lcw+examples 
+    ^lci+examples+tests+benchmarks fabric=ofi
     ^mpich+vci+slurm~hydra~fortran netmod=ofi pmi=slurm ch4_shmmods=none
+    ^silo~mpi~python
+    ^hdf5@1.14.3
+  - hpx-bench@master
   view: true
   concretizer:
     unify: true
+    reuse: false
   develop:
+    hpx_bench:
+      path: ../../../../hpx_bench
+      spec: hpx-bench@=master
+    hpx:
+      path: ../../../../hpx-lcw
+      spec: hpx@=master
     lci:
-      path: ../../../../lci2
+      path: ../../../../lci
       spec: lci@=2.0.0
     lcw:
       path: ../../../../lcw
       spec: lcw@=master
-    mpich:
-      path: ../../../../mpich
-      spec: mpich@=master

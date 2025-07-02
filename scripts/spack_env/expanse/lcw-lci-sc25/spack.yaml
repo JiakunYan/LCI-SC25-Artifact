@@ -14,12 +14,9 @@ spack:
     unify: true
     reuse: false
   develop:
-    mpich:
-      path: ../../../../mpich
-      spec: mpich@=master
     lcw:
       path: ../../../../lcw
       spec: lcw@=master
     lci:
-      path: ../../../../lci2
+      path: ../../../../lci
       spec: lci@=2.0.0
