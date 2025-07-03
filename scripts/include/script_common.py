@@ -216,15 +216,7 @@ def submit_slurm_job(job_file, tag, nnodes, configs, time, name, partition, qos,
         sbatch_args += extra_args
 
     command = f"sbatch {' '.join(sbatch_args)} {job_file}"
-    output, _ = pshell.run(command)
-    jobid = re.search(r"Submitted batch job (\d+)", output)
-    if jobid:
-        jobid = jobid.group(1)
-        sbatch_filename = "./run/submit.{}.{}.{}.sbatch".format(tag, job_name, jobid)
-        with open(sbatch_filename, "w") as f:
-            f.write("#!/bin/bash\n")
-            for arg in sbatch_args:
-                f.write("#SBATCH " + arg + "\n")
+    pshell.run(command)
         
 def submit_job(job_file, tag, nnodes, configs, time=1, name=None, partition=None, qos=None, extra_args=None):
     common_config = intersect_dicts(configs)

@@ -3,7 +3,7 @@ import sys
 sys.path.append("../../../include")
 from script_common import *
 
-spack_env = "hpx-lci2-sc25"
+spack_env = "hpx-lci-sc25"
 lci_optimal_ndevices=2
 lcw_optimal_ndevices=8
 ntasks_per_node=2
