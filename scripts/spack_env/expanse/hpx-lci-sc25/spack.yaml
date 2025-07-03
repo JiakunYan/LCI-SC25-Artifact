@@ -13,20 +13,13 @@ spack:
     ^libfabric fabrics=verbs,rxm
     ^silo~mpi~python
     ^hdf5@1.14.3
-  - hpx-bench@master
   view: true
   concretizer:
     unify: true
     reuse: false
   develop:
-    mpich:
-      path: ../../../../mpich
-      spec: mpich@=master
-    hpx_bench:
-      path: ../../../../hpx_bench
-      spec: hpx-bench@=master
     hpx:
-      path: ../../../../hpx-lcw
+      path: ../../../../hpx
       spec: hpx@=master
     lcw:
       path: ../../../../lcw

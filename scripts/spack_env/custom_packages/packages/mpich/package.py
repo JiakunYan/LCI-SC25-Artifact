@@ -279,6 +279,9 @@ with '-Wl,-commons,use_dylibs' and without
 
     depends_on("cray-pmi", when="pmi=cray")
 
+    # Hack for now.
+    depends_on("libnl", when="netmod=ofi")
+
     conflicts("device=ch4", when="@:3.2")
     conflicts("netmod=ofi", when="@:3.1.4")
     conflicts("netmod=ucx", when="device=ch3")

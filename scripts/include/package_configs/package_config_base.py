@@ -77,16 +77,10 @@ def get_args(config):
     return ret
 
 from package_configs.package_config_mpich import *
-from package_configs.package_config_lci import *
 from package_configs.package_config_lci2 import *
 from package_configs.package_config_lcw import *
 from package_configs.package_config_lcw_pingpong import *
 from package_configs.package_config_hpx import *
-from package_configs.package_config_hpx_pingpong import *
-from package_configs.package_config_hpxb_raccess import *
-from package_configs.package_config_hpxb_fft import *
 from package_configs.package_config_octotiger import *
-from package_configs.package_config_legion import *
-from package_configs.package_config_legion_circuit import *
 from package_configs.package_config_arl import *
 from package_configs.package_config_arl_kcount import *

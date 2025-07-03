@@ -8,7 +8,7 @@ spack:
   - lcw+examples
     ^lci fabric=ibv
     ^mpich+vci+slurm~hydra~fortran netmod=ucx pmi=slurm
-    ^ucx+verbs+rc+ud+mlx5_dv+ib_hw_tm+dc+thread_multiple+knem+cma+xpmem+rdmacm
+    ^ucx+verbs+rc+ud+mlx5_dv+ib_hw_tm+dc+thread_multiple+knem+cma+xpmem+rdmacm+dm
   view: true
   concretizer:
     unify: true

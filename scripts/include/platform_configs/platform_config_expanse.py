@@ -9,7 +9,7 @@ class ExpanseConfig(PlatformConfigBase):
     network = "ibv"
     cpus_per_node = 128
     gpus_per_node = 0
-    account = "uic193" # FIXME: Should be changed to your account
+    account = "uic453" # FIXME: Should be changed to your account
     partition = "compute"
     additional_sbatch_args = ["--mem=128G", "--constraint=\"lustre\""]
     octotiger_dataset_path = {

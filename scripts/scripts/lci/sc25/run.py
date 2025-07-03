@@ -8,7 +8,7 @@ from script_common import *
 default_config = {
     "name": "lci-bench",
     "root_packages": "lci2",
-    "spack_env": "lcw-lci2-sc25",
+    "spack_env": "lcw-lci-sc25",
     "nnodes": [1],
     "ntasks_per_node": 1,
     "window": 8,

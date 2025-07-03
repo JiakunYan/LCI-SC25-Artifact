@@ -12,17 +12,13 @@ spack:
     ^mpich+vci+slurm~hydra~fortran netmod=ofi pmi=slurm ch4_shmmods=none
     ^silo~mpi~python
     ^hdf5@1.14.3
-  - hpx-bench@master
   view: true
   concretizer:
     unify: true
     reuse: false
   develop:
-    hpx_bench:
-      path: ../../../../hpx_bench
-      spec: hpx-bench@=master
     hpx:
-      path: ../../../../hpx-lcw
+      path: ../../../../hpx
       spec: hpx@=master
     lci:
       path: ../../../../lci

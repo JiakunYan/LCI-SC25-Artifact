@@ -8,7 +8,7 @@ from script_common import *
 default_config = {
     "name": "$config[app_name]-$config[rt_name]",
     "root_packages": "lcw_pingpong",
-    "spack_env": "lcw-lci2-sc25",
+    "spack_env": "lcw-lci-sc25",
     "nnodes": [2],
     "ntasks_per_node": 1,
     "lcwpp:op": "send",
