@@ -1,0 +1,25 @@
+From d5adec27ce05ad8effec972b34750167ea5cfa38 Mon Sep 17 00:00:00 2001
+From: Yanfei Guo <yguo@anl.gov>
+Date: Wed, 22 May 2024 10:03:30 -0500
+Subject: [PATCH] PMI: allow user overriding KEY VAL length
+
+Fixes #6924.
+---
+ src/util/mpir_pmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/util/mpir_pmi.c b/src/util/mpir_pmi.c
+index 959b64638d8..f371f39a234 100644
+--- a/src/util/mpir_pmi.c
++++ b/src/util/mpir_pmi.c
+@@ -148,6 +148,10 @@ int MPIR_pmi_init(void)
+                mpi_errno = pmix_init(&has_parent, &rank, &size, &appnum));
+     MPIR_ERR_CHECK(mpi_errno);
+ 
++    /* allowing user to override default KEY VAL size for certain system setups */
++    MPL_env2int("PMI_MAX_KEY_SIZE", &pmi_max_key_size);
++    MPL_env2int("PMI_MAX_VAL_SIZE", &pmi_max_val_size);
++
+     unsigned world_id = 0;
+     if (pmi_kvs_name) {
+         HASH_FNV(pmi_kvs_name, strlen(pmi_kvs_name), world_id);

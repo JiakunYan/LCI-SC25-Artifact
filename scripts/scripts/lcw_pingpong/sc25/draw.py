@@ -139,35 +139,6 @@ def plot(df, x_key, y_key, tag_key, title,
     with open(output_json_name, 'w') as outfile:
         json.dump({"Time": lines, "Speedup": speedup_lines}, outfile)
 
-def plot_bars(df, x_key, y_key, title,
-              x_label=None, y_label=None,
-              dirname=None, filename=None):
-    if x_label is None:
-        x_label = x_key
-    if y_label is None:
-        y_label = y_key
-
-    df = df.sort_values(by=[x_key])
-    data = parse_simple(df, x_key, y_key)
-
-    fig, ax = plt.subplots()
-    bar = ax.barh(data["x"], data["y"], xerr=data["error"], label=y_label)
-    ax.barh(data["x"], np.array(data["y"]) * 0.08, left=data["y"], color="white")
-    for i, rect in enumerate(bar):
-        text = f'{data["y"][i]:.2f}'
-        ax.text(data["y"][i], rect.get_y() + rect.get_height() / 2.0,
-                text, ha='left', va='center')
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-
-    if filename is None:
-        filename = title
-
-    if not os.path.exists(dirname):
-        os.mkdir(dirname)
-    output_png_name = os.path.join(dirname, "{}-bar.png".format(filename))
-    fig.savefig(output_png_name, bbox_inches='tight')
-
 def batch(df):
     if not os.path.exists(output_path):
         os.mkdir(output_path)
@@ -267,18 +238,7 @@ def batch(df):
                           axis=1)
         
 
-    ## messsage rate
-    df1_tmp = df[df.apply(lambda row:
-                          row["ncores"] != 124 and
-                          "lt" in row["app_name"],
-                          axis=1)]
-    df1 = df1_tmp.copy()
-    plot(df1, "ncores", "msg_rate(K/s)", "name2", None,
-         dirname=dirname, filename="lt-all", with_error=True,
-         x_label="Core Number", y_label="Message Rate (K/s)",
-         color_fn=color_fn, linestyle_fn=linestyle_fn, figsize=(8, 4), 
-         label_order_fn=label_order_fn)
-    
+    ## messsage rate    
     df1_tmp = df[df.apply(lambda row:
                           row["ncores"] != 124 and
                           "lt" in row["app_name"] and
@@ -293,21 +253,6 @@ def batch(df):
     df1_tmp = df[df.apply(lambda row:
                           row["ncores"] != 124 and
                           "lt" in row["app_name"] and
-                          (("thrd-m" in row["app_name2"] and
-                          "Cray" not in row["rt_name2"] and
-                          "GASNet" not in row["rt_name2"]) or
-                          "thrd-s" in row["app_name2"]),
-                          axis=1)]
-    df1 = df1_tmp.copy()
-    plot(df1, "ncores", "msg_rate(K/s)", "app_rt_name2", None,
-         dirname=dirname, filename="lt-thrd", with_error=True,
-         x_label="Core Number", y_label="Message Rate (K/s)",
-         color_fn=color_fn, linestyle_fn=linestyle_fn_for_thrd, 
-         label_fn=label_fn_for_thrd, label_order_fn=label_order_fn)
-    
-    df1_tmp = df[df.apply(lambda row:
-                          row["ncores"] != 124 and
-                          "lt" in row["app_name"] and
                           "thrd-m" in row["app_name2"] and
                           "Cray" not in row["rt_name2"] and
                           "GASNet" not in row["rt_name2"],
@@ -316,7 +261,7 @@ def batch(df):
     plot(df1, "ncores", "msg_rate(K/s)", "rt_name2", None,
          dirname=dirname, filename="lt-thrd-m", with_error=True,
          x_label="Core Number", y_label="Message Rate (K/s)",
-         color_fn=color_fn, separate_legend=True, 
+         color_fn=color_fn, separate_legend=False, 
          label_order_fn=label_order_fn)
     
     df1_tmp = df[df.apply(lambda row:
@@ -328,21 +273,10 @@ def batch(df):
     plot(df1, "ncores", "msg_rate(K/s)", "rt_name2", None,
          dirname=dirname, filename="lt-thrd-s", with_error=True,
          x_label="Core Number", y_label="Message Rate (K/s)",
-         color_fn=color_fn, separate_legend=True, 
+         color_fn=color_fn, separate_legend=False, 
          label_order_fn=label_order_fn)
     
-    # bandwidth
-    df1_tmp = df[df.apply(lambda row:
-                          row["ncores"] != 124 and
-                          "bw" in row["app_name"],
-                          axis=1)]
-    df1 = df1_tmp.copy()
-    plot(df1, "lcwpp:min_size", "bandwidth(MB/s)", "name2", None,
-         dirname=dirname, filename="bw-all", with_error=True,
-         x_label="Message Size", y_label="Bandwidth (MB/s)",
-         color_fn=color_fn, linestyle_fn=linestyle_fn,
-         figsize=(8, 4), label_order_fn=label_order_fn)
-    
+    # bandwidth    
     df1_tmp = df[df.apply(lambda row:
                           row["ncores"] != 124 and
                           "bw" in row["app_name"] and
@@ -357,21 +291,6 @@ def batch(df):
     df1_tmp = df[df.apply(lambda row:
                           row["ncores"] != 124 and
                           "bw" in row["app_name"] and
-                          (("thrd-m" in row["app_name2"] and
-                          "Cray" not in row["rt_name2"] and
-                          "GASNet" not in row["rt_name2"]) or
-                          ("thrd-s" in row["app_name2"])),
-                          axis=1)]
-    df1 = df1_tmp.copy()
-    plot(df1, "lcwpp:min_size", "bandwidth(MB/s)", "app_rt_name2", None,
-         dirname=dirname, filename="bw-thrd", with_error=True,
-         x_label="Message Size", y_label="Bandwidth (MB/s)",
-         color_fn=color_fn, linestyle_fn=linestyle_fn_for_thrd, 
-         label_fn=label_fn_for_thrd, label_order_fn=label_order_fn)
-    
-    df1_tmp = df[df.apply(lambda row:
-                          row["ncores"] != 124 and
-                          "bw" in row["app_name"] and
                           "thrd-m" in row["app_name2"] and
                           "Cray" not in row["rt_name2"] and
                           "GASNet" not in row["rt_name2"],
@@ -380,7 +299,7 @@ def batch(df):
     plot(df1, "lcwpp:min_size", "bandwidth(MB/s)", "rt_name2", None,
          dirname=dirname, filename="bw-thrd-m", with_error=True,
          x_label="Message Size", y_label="Bandwidth (MB/s)",
-         color_fn=color_fn, separate_legend=True, label_order_fn=label_order_fn)
+         color_fn=color_fn, separate_legend=False, label_order_fn=label_order_fn)
     
     df1_tmp = df[df.apply(lambda row:
                           row["ncores"] != 124 and
@@ -391,7 +310,7 @@ def batch(df):
     plot(df1, "lcwpp:min_size", "bandwidth(MB/s)", "rt_name2", None,
          dirname=dirname, filename="bw-thrd-s", with_error=True,
          x_label="Message Size", y_label="Bandwidth (MB/s)",
-         color_fn=color_fn, separate_legend=True, label_order_fn=label_order_fn)
+         color_fn=color_fn, separate_legend=False, label_order_fn=label_order_fn)
 
 if __name__ == "__main__":
     plt.rcParams["font.family"] = "Times New Roman"

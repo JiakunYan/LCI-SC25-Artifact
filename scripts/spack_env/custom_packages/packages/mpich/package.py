@@ -230,6 +230,9 @@ with '-Wl,-commons,use_dylibs' and without
         patch("mpich34_yaksa_hindexed.patch", when="datatype-engine=yaksa")
         patch("mpich34_yaksa_hindexed.patch", when="datatype-engine=auto device=ch4")
 
+    # Fix PMI maximum length error
+    patch("mpich-pr7009.patch")
+
     depends_on("findutils", type="build")
     depends_on("pkgconfig", type="build")
 
