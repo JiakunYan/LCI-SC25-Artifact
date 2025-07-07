@@ -1,0 +1,12 @@
+[submodule "lci"]
+	path = lci
+	url = git@github.com:uiuc-hpc/lci.git
+[submodule "arl"]
+	path = arl
+	url = git@github.com:JiakunYan/arl.git
+[submodule "lcw"]
+	path = lcw
+	url = git@github.com:JiakunYan/lcw.git
+[submodule "hpx"]
+	path = hpx
+	url = git@github.com:uiuc-hpc/hpx.git
