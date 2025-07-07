@@ -3,14 +3,10 @@
 import pandas as pd
 import os,sys, json
 from matplotlib import pyplot as plt
-import matplotlib.cm as mplcm
-import matplotlib.colors as colors
 import itertools
 sys.path.append("../../../include")
-from draw_simple import *
-from draw_bokeh import plot_bokeh
+from parse_simple import *
 import numpy as np
-import re
 import math
 import argparse
 from pathlib import Path
@@ -26,10 +22,6 @@ def plot(df, x_key, y_key, tag_key, title,
          with_error=True, position="all",
          color_fn=None, linestyle_fn=None,
          label_order=None, figsize=(4, 3)):
-    plot_bokeh(df, x_key, y_key, tag_key, title,
-               x_label=x_label, y_label=y_label,
-               dirname=dirname, filename=filename,
-               label_fn=label_fn, zero_x_is=zero_x_is)
     if x_label is None:
         x_label = x_key
     if y_label is None:
@@ -134,36 +126,9 @@ def plot(df, x_key, y_key, tag_key, title,
     with open(output_json_name, 'w') as outfile:
         json.dump({"Time": lines, "Speedup": speedup_lines}, outfile)
 
-def plot_bars(df, x_key, y_key, title,
-              x_label=None, y_label=None,
-              dirname=None, filename=None):
-    if x_label is None:
-        x_label = x_key
-    if y_label is None:
-        y_label = y_key
-
-    df = df.sort_values(by=[x_key])
-    data = parse_simple(df, x_key, y_key)
-
-    fig, ax = plt.subplots()
-    bar = ax.barh(data["x"], data["y"], xerr=data["error"], label=y_label)
-    ax.barh(data["x"], np.array(data["y"]) * 0.08, left=data["y"], color="white")
-    for i, rect in enumerate(bar):
-        text = f'{data["y"][i]:.2f}'
-        ax.text(data["y"][i], rect.get_y() + rect.get_height() / 2.0,
-                text, ha='left', va='center')
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-
-    if filename is None:
-        filename = title
-
-    if not os.path.exists(dirname):
-        os.mkdir(dirname)
-    output_png_name = os.path.join(dirname, "{}-bar.png".format(filename))
-    fig.savefig(output_png_name, bbox_inches='tight')
-
 def batch(df):
+    if not os.path.exists(output_path):
+        os.mkdir(output_path)
     dirname = os.path.join(output_path, job_name)
     
     def rename(row):

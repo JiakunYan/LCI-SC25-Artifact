@@ -7,8 +7,7 @@ import matplotlib.cm as mplcm
 import matplotlib.colors as colors
 import itertools
 sys.path.append("../../../include")
-from draw_simple import *
-from draw_bokeh import plot_bokeh
+from parse_simple import *
 import numpy as np
 import re
 import math
@@ -27,10 +26,6 @@ def plot(df, x_key, y_key, tag_key, title,
          color_fn=None, linestyle_fn=None,
          label_order_fn=None, figsize=(4, 3),
          separate_legend=False):
-    plot_bokeh(df, x_key, y_key, tag_key, title,
-               x_label=x_label, y_label=y_label,
-               dirname=dirname, filename=filename,
-               label_fn=label_fn, zero_x_is=zero_x_is)
     if x_label is None:
         x_label = x_key
     if y_label is None:
@@ -174,6 +169,8 @@ def plot_bars(df, x_key, y_key, title,
     fig.savefig(output_png_name, bbox_inches='tight')
 
 def batch(df):
+    if not os.path.exists(output_path):
+        os.mkdir(output_path)
     dirname = os.path.join(output_path, job_name)
 
     def rename_app(row):

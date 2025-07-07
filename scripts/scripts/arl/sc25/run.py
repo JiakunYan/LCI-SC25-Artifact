@@ -28,8 +28,8 @@ app_configs = [
 
 rt_config = [
     {"rt_name": "lci-t64", "spack_env": "arl-lci-sc25", "arlkcount:backend": "lci", "ntasks_per_node": 2},
-    {"rt_name": "gex-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2},
-    {"rt_name": "gex-p1-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "arl:nprgthreads": 1},
+    {"rt_name": "gex-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "when": lambda config: platformConfig.name == "expanse"}, # FIXME: update platform name if necessary
+    {"rt_name": "gex-p1-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "arl:nprgthreads": 1, "when": lambda config: platformConfig.name == "delta"}, # FIXME: update platform name if necessary
     {"spack_env": "arl-gex-sc25", "rt_name": "upcxx", "arlkcount:backend": "upcxx", "ntasks_per_node": 128},
 ]
 
@@ -39,6 +39,15 @@ rt_config = [
 update_outside = None
 update_inside = None
 configs = dict_product(default_config, app_configs, rt_config)
+
+filtered_configs = []
+for config in configs:
+    if "when" in config:
+        if not config["when"](config):
+            continue
+        del config["when"]
+    filtered_configs.append(config)
+configs = filtered_configs
 
 if __name__ == "__main__":
     n = 1

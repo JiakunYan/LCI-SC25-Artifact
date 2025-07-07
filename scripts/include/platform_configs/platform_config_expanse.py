@@ -13,7 +13,7 @@ class ExpanseConfig(PlatformConfigBase):
     partition = "compute"
     additional_sbatch_args = ["--mem=128G", "--constraint=\"lustre\""]
     octotiger_dataset_path = {
-        "rs": "%root%/scripts/octotiger/data",
+        "rs": "/expanse/lustre/scratch/jackyan1/temp_project/octotiger-dataset/",
     } # FIXME: Should be changed to your dataset path
     hipmer_dataset_path = "/expanse/lustre/scratch/jackyan1/temp_project/hipmer-dataset/" # FIXME: Should be changed to your dataset path
 

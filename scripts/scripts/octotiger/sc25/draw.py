@@ -9,8 +9,7 @@ import itertools
 import argparse
 from pathlib import Path
 sys.path.append("../../../include")
-from draw_simple import *
-from draw_bokeh import plot_bokeh
+from parse_simple import *
 import numpy as np
 import math
 from ast import literal_eval
@@ -133,135 +132,9 @@ def plot_lines(df, x_key, y_key, tag_keys, title=None,
     with open(output_json_name, 'w') as outfile:
         json.dump({"Time": lines, "Speedup": speedup_lines}, outfile)
 
-def plot_normalized_grouped_bars(df, app_key, runtime_key, attribute_key, metric_key, base_config,
-                                 apps=None, configs=None, labels=None,
-                                 title=None, x_label=None, y_label=None, x_ticklabels=None,
-                                 dirname=None, filename=None):
-    """
-    Plot normalized grouped bars where each application's bars are normalized to its base configuration.
-    
-    Parameters:
-    df: DataFrame with the data
-    app_key: Column name for applications
-    runtime_key: Column name for runtime configurations
-    metric_key: Column name for the metric to plot
-    base_config: The base runtime configuration to normalize against
-    """
-    # Get unique values
-    if apps is None:
-        apps = df[app_key].unique()
-    else:
-        apps = [app for app in apps if app in df[app_key].unique()]
-    if configs is None:
-        configs = df[runtime_key].unique()
-    else:
-        configs = [config for config in configs if config in df[runtime_key].unique()]
-    if labels is None:
-        labels = configs
-    datapoints = []
-    
-    for app in apps:
-        app_data = df[df[app_key] == app]
-
-        attribute = app_data[attribute_key].iloc[0]
-        if attribute in ["latency", "runtime"]:
-            lower_is_better = True
-        else:
-            lower_is_better = False
-
-        if base_config not in app_data[runtime_key].values:
-            print(f"Warning: No data for {app} with {base_config}")
-            return
-        base_value = app_data[app_data[runtime_key] == base_config][metric_key].mean()
-        for config in configs:
-            data = app_data[app_data[runtime_key] == config][metric_key]
-            if not data.empty:
-                if lower_is_better:
-                    normalized_data = base_value / data
-                else:
-                    normalized_data = data / base_value
-                datapoints.append({
-                    app_key: app,
-                    runtime_key: config,
-                    'mean': normalized_data.mean(),
-                    'std': normalized_data.std()
-                })
-            else:
-                print(f"Warning: No data for {app} with {config}")
-                datapoints.append({
-                    app_key: app,
-                    runtime_key: config,
-                    'mean': math.nan,
-                    'std': math.nan
-                })
-    normalized_df = pd.DataFrame(datapoints)
-    
-    # Plotting
-    n_groups = len(apps)
-    n_configs = len(configs)
-    width = 0.8 / n_configs
-    
-    # fig, ax = plt.subplots(figsize=(12, 6))
-    fig, ax = plt.subplots(1, 1, figsize=(n_groups * (n_configs + 1) * 0.24 + 1, 3))
-    
-    # Plot bars for each configuration
-    hatches = itertools.cycle(["/", "\\", "|", "-", "+", "x", ".", "*", "o", "O"])
-    for i, config in enumerate(configs):
-        positions = np.arange(n_groups) + i * width
-        heights = [normalized_df[(normalized_df[app_key] == app) & 
-                               (normalized_df[runtime_key] == config)]['mean'].iloc[0]
-                  for app in apps]
-        errors = [normalized_df[(normalized_df[app_key] == app) & 
-                               (normalized_df[runtime_key] == config)]['std'].iloc[0]
-                  for app in apps]
-        # print(app, config, heights, errors)
-        errors = [0 if math.isnan(x) else x for x in errors]
-        bar = ax.bar(positions, heights, yerr=errors, width=width, label=labels[i], hatch=next(hatches))
-        for j, rect in enumerate(bar):
-            text = f' {heights[j]:.2f}'
-            ax.text(rect.get_x() + rect.get_width() / 2.0, heights[j]   ,
-                    text, ha='center', va='bottom', rotation=60)
-    # Add horizontal line at y=1
-    ax.axhline(y=1, color='black', linestyle='--', alpha=0.5)
-    
-    # Customize plot
-    if y_label is None:
-        y_label = f'Normalized Performance'
-    ax.set_ylabel(y_label)
-    ax.set_xlabel(x_label)
-    if title is not None:
-        ax.set_title(title)
-    ax.set_xticks(np.arange(n_groups) + (n_configs-1) * width/2)
-    if x_ticklabels is None:
-        x_ticklabels = apps
-    ax.set_xticklabels(x_ticklabels)
-    ax.set_ylim(ymin=0)
-
-    lines1, labels1 = ax.get_legend_handles_labels()
-    nrows = len(labels1) / 6.0
-    ncols = math.ceil(len(labels1) / nrows)
-    if nrows == 1:
-        y_loc = 1
-    else:
-        y_loc = 1.02
-    fig.legend(lines1, labels1, loc="center", bbox_to_anchor=(0.5, y_loc), ncols=ncols)
-
-    plt.tight_layout()
-
-    if title is None:
-        title = "default"
-    if filename is None:
-        filename = title
-
-    if not os.path.exists(dirname):
-        os.mkdir(dirname)
-    output_png_name = os.path.join(dirname, "{}.png".format(filename))
-    fig.savefig(output_png_name, bbox_inches='tight')
-    output_json_name = os.path.join(dirname, "{}.json".format(filename))
-    with open(output_json_name, 'w') as outfile:
-        normalized_df.to_json(outfile, orient='records')
-
 def batch(df, job_name):
+    if not os.path.exists(output_path):
+        os.mkdir(output_path)
     dirname = os.path.join(output_path, job_name)
 
 

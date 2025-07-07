@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import numpy as np
+
 import math
 def parse_tag(df, x_key, y_key, tag_key):
     lines = []

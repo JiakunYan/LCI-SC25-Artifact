@@ -50,8 +50,8 @@ rt_configs = [
     {"rt_name": "lci", "lcw:backend": "lci2"},
     {"rt_name": "mpi", "lcw:backend": "mpi"},
     {"rt_name": "gex", "lcw:backend": "gex", "lcwpp:op": "put", "when": lambda config: "lt" in config["app_name"]},
-    {"rt_name": "mpi-ucx", "lcw:backend": "mpi", "spack_env": "lcw-mpi-ucx-sc25", "when": lambda config: platformConfig.name == "expanse"},
-    {"rt_name": "cray-mpich", "lcw:backend": "mpi", "spack_env": "lcw-cray-mpich-sc25", "when": lambda config: platformConfig.name == "delta"},
+    {"rt_name": "mpi-ucx", "lcw:backend": "mpi", "spack_env": "lcw-mpi-ucx-sc25", "when": lambda config: platformConfig.name == "expanse"}, # FIXME: update platform name if necessary
+    {"rt_name": "cray-mpich", "lcw:backend": "mpi", "spack_env": "lcw-cray-mpich-sc25", "when": lambda config: platformConfig.name == "delta"}, # FIXME: update platform name if necessary
 ]
 
 # update_outside = app_configs
