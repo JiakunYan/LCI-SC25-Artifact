@@ -1,5 +1,0 @@
-numpy
-matplotlib
-python-dateutil
-lxml
-# hpx-no-inspect

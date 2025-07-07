@@ -1,6 +1,0 @@
-add_arl_executable(arl_hh_agg arl_hh_agg.cpp)
-add_arl_executable(arl_hh_aggrd arl_hh_aggrd.cpp)
-add_arl_executable(arl_hh_ff arl_hh_ff.cpp)
-add_arl_executable(arl_hh_ffrd arl_hh_ffrd.cpp)
-add_gex_executable(gex_hh gex_hh.cpp)
-add_upcxx_executable(upcxx_hh_agg upcxx_hh_agg.cpp)
