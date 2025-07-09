@@ -3,8 +3,7 @@
 import pandas as pd
 import os,sys, json
 from matplotlib import pyplot as plt
-import matplotlib.cm as mplcm
-import matplotlib.colors as colors
+from matplotlib.ticker import FormatStrFormatter
 import itertools
 import argparse
 from pathlib import Path

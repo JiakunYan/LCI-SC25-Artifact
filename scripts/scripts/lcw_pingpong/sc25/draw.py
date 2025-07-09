@@ -3,8 +3,6 @@
 import pandas as pd
 import os,sys, json
 from matplotlib import pyplot as plt
-import matplotlib.cm as mplcm
-import matplotlib.colors as colors
 import itertools
 sys.path.append("../../../include")
 from parse_simple import *

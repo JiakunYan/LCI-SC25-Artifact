@@ -27,8 +27,8 @@ niters = 3
 do_warmup = False
 for i in range(niters):
     for config in configs:
-        if platformConfig.name == "delta" and config["spack_env"] == "arl-gex":
-            # special treatment for GASNet-EX to walk around SS11 bugs
+        if platformConfig.name == "delta" and config["arlkcount:backend"] == "gex":
+            # special treatment for GASNet-EX to walk around Delta SS11 bugs
             pshell.run("export GASNET_OFI_RECEIVE_BUFF_SIZE=recv")
             pshell.run("export FI_OFI_RXM_RX_SIZE=8192")
             pshell.run("export FI_CXI_DEFAULT_CQ_SIZE=13107200")
@@ -52,9 +52,10 @@ for i in range(niters):
         output, _ = pshell.run(cmd)
         pattern = "Estimated throughput is (\S+) Mkmers/s"
         matches = re.findall(pattern, output)
-        result0 = float(matches[0]) if len(matches) > 0 else -1
-        result1 = float(matches[1]) if len(matches) > 1 else -1
-        total = result0 + result1
-        print("hpx-all result: {}-{}: throughput: {},{},{}".format(config["app_name"], config["rt_name"], result0, result1, (result0 + result1) / 2))
+        result0 = float(matches[0]) if len(matches) > 0 else -1 # Throughput of the first pass
+        result1 = float(matches[1]) if len(matches) > 1 else -1 # Throughput of the second pass
+         # Throughput of the two pass together
+        result_total = (result0 + result1) / 4
+        print("hpx-all result: {}-{}: throughput: {},{},{}".format(config["app_name"], config["rt_name"], result0, result1, result_total))
 end_time = time.time()
 print("Executed {} configs. Total time is {}s.".format(len(configs), end_time - start_time))

@@ -147,7 +147,6 @@ def batch(df):
                 found = key
                 break
         rt_name = dict_rt_name[found]
-        print(row["rt_name"], rt_name)
         return rt_name
     df["name2"] = df.apply(rename, axis=1)
     df["throughput"] = df["avg_throughput"].apply(lambda x: x * 1e6)

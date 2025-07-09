@@ -13,7 +13,7 @@ class DeltaConfig(PlatformConfigBase):
     partition = "cpu"
     qos = None
     octotiger_dataset_path = {
-        "rs": "/scratch/bert/jiakuny/hipmer-dataset/octotiger-dataset/",
+        "rs": "/scratch/bert/jiakuny/octotiger-dataset/rs",
     } # FIXME: Should be changed to your dataset path
     hipmer_dataset_path = "/scratch/bert/jiakuny/hipmer-dataset/" # FIXME: Should be changed to your dataset path
 
