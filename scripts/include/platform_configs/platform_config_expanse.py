@@ -9,13 +9,13 @@ class ExpanseConfig(PlatformConfigBase):
     network = "ibv"
     cpus_per_node = 128
     gpus_per_node = 0
-    account = "uic453" # FIXME: Should be changed to your account
+    account = "uic453" # FIXME Basic: Should be changed to your account
     partition = "compute"
     additional_sbatch_args = ["--mem=128G", "--constraint=\"lustre\""]
     octotiger_dataset_path = {
         "rs": "/expanse/lustre/scratch/jackyan1/temp_project/octotiger-dataset/rs",
-    } # FIXME: Should be changed to your dataset path
-    hipmer_dataset_path = "/expanse/lustre/scratch/jackyan1/temp_project/hipmer-dataset/" # FIXME: Should be changed to your dataset path
+    } # FIXME Basic: Should be changed to your dataset path
+    hipmer_dataset_path = "/expanse/lustre/scratch/jackyan1/temp_project/hipmer-dataset/" # FIXME Basic: Should be changed to your dataset path
 
     def get_srun_args(self, config):
         pmi = config.get("pmi", "pmi2")

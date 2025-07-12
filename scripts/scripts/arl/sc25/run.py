@@ -28,8 +28,8 @@ app_configs = [
 
 rt_config = [
     {"rt_name": "lci-t64", "spack_env": "arl-lci-sc25", "arlkcount:backend": "lci", "ntasks_per_node": 2},
-    {"rt_name": "gex-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "when": lambda config: platformConfig.name == "expanse"}, # FIXME: update platform name if necessary
-    {"rt_name": "gex-p1-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "arl:nprgthreads": 1, "when": lambda config: platformConfig.name == "delta"}, # FIXME: update platform name if necessary
+    {"rt_name": "gex-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "when": lambda config: platformConfig.name == "expanse"}, # FIXME Platform: update platform name if necessary
+    {"rt_name": "gex-p1-t64", "spack_env": "arl-gex-sc25", "arlkcount:backend": "gex", "ntasks_per_node": 2, "arl:nprgthreads": 1, "when": lambda config: platformConfig.name == "delta"}, # FIXME Platform: update platform name if necessary
     {"rt_name": "upcxx", "spack_env": "arl-gex-sc25", "arlkcount:backend": "upcxx", "ntasks_per_node": 128},
 ]
 

@@ -38,6 +38,7 @@ elif "HOSTNAME" in os.environ and "delta" in os.environ["HOSTNAME"] or \
 # else:
 #     print("Unknown platform!")
 #     exit(1)
+# FIXME Platform: Add more platforms if needed
 
 def get_platform_config(name, config, default=None):
     target = getattr(platformConfig, name, default)

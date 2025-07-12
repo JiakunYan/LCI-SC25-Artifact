@@ -161,7 +161,7 @@ def batch(df):
     
     ## lines
     df1_tmp = df[df.apply(lambda row:
-                          (row["platform"] == "expanse" and row["name2"] != "GASNet-EX (p1)" or row["platform"] == "delta" and row["name2"] != "GASNet-EX") and # FIXME: update platform name if necessary
+                          (row["platform"] == "expanse" and row["name2"] != "GASNet-EX (p1)" or row["platform"] == "delta" and row["name2"] != "GASNet-EX") and # FIXME Platform: update platform name if necessary
                           row["avg_throughput"] > 0, axis=1)]
     df1 = df1_tmp.copy()
     plot(df1, "nnodes", "throughput", "name2", None,

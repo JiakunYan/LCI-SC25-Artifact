@@ -9,13 +9,13 @@ class DeltaConfig(PlatformConfigBase):
     cpus_per_node = 128
     gpus_per_node = 0
     cpus_per_core = 1
-    account = "bert-delta-cpu" # FIXME: Should be changed to your account
+    account = "bert-delta-cpu" # FIXME Basic: Should be changed to your account
     partition = "cpu"
     qos = None
     octotiger_dataset_path = {
         "rs": "/scratch/bert/jiakuny/octotiger-dataset/rs",
-    } # FIXME: Should be changed to your dataset path
-    hipmer_dataset_path = "/scratch/bert/jiakuny/hipmer-dataset/" # FIXME: Should be changed to your dataset path
+    } # FIXME Basic: Should be changed to your dataset path
+    hipmer_dataset_path = "/scratch/bert/jiakuny/hipmer-dataset/" # FIXME Basic: Should be changed to your dataset path
 
     @property
     def additional_sbatch_args(self):
